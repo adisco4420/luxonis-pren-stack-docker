@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.root {
+  background-size: cover;
+  height: 100vh;
+  width: 100vw;
+}
