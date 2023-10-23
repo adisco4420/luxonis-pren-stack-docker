@@ -1,0 +1,55 @@
+version: '3.4'
+
+services:
+  web:
+    image: web
+    build:
+      context: web
+      dockerfile: ./Dockerfile
+    networks:
+      - luxonis-api
+    environment:
+      NODE_ENV: production
+    ports:
+      - 8080:8080
+  backend:
+    image: backend
+    build:
+      context: backend
+      dockerfile: ./Dockerfile
+    networks:
+      - luxonis-api
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 'pwd'
+      POSTGRES_HOST: 'luxonis-db'
+      POSTGRES_PORT: 5432
+      POSTGRES_DB_NAME: 'luxonis-4'
+    ports:
+      - 4000:4000
+    depends_on:
+      luxonis-db:
+        condition: service_healthy
+  luxonis-db:
+    image: postgres:9.6-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: luxonis-4
+      PGDATA: /var/lib/postgresql/data/pg9.6
+    networks:
+      - luxonis-api
+    ports:
+      - '35432:5432'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  luxonis-api: 
+    driver: bridge
