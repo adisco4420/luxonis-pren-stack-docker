@@ -1,0 +1,14 @@
+.properties-container .property-item .card {
+    height: 360px;
+    border-radius: 20px;
+    border-color: #1111111a;
+}
+.properties-container .property-item .card:hover {
+    cursor: pointer;
+    box-shadow: 0 0.5rem 1rem #00000026;
+}
+.properties-container .property-item .card img {
+    height: 200px;
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+}

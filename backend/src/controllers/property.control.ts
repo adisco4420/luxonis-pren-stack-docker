@@ -13,8 +13,11 @@ class PropertyControl {
     }
     fetchAll = async (req: Request, res: Response) => {
         try {                        
-            const properties = await PropertyModel.findAll({});
-            const data = {properties};
+            const limit = Number(req.query.limit) || 100;
+            const offset = Number(req.query.page) || 0;
+            const query = {where: {}, limit, offset}
+            const { rows, count } = await PropertyModel.findAndCountAll(query);
+            const data = {total_records: count, properties: rows};
             res.status(200).json({status: 'SUCCESS', message: 'Property fetched successfully', data})
         } catch (error: any) {
             console.log(error);
